@@ -1,0 +1,15 @@
+{
+  "$comment": [
+    "Copy to .claude/settings.local.json (already in .gitignore) and edit.",
+    "These env vars route the Claude Code session itself through an Anthropic-compatible",
+    "proxy — useful when your team shares a metered key on gngn.my, openrouter, etc.",
+    "The backend's tour-generation feature reads its own credentials from .env (root)."
+  ],
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.gngn.my",
+    "ANTHROPIC_AUTH_TOKEN": "sk-ant-…replace-me…",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-7",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5"
+  }
+}

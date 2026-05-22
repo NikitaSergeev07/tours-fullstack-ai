@@ -1,0 +1,109 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: tours_postgres
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-tours}
+      POSTGRES_USER: ${DB_USERNAME:-tours}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-tours_secret}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-tours}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - tours
+
+  embeddings:
+    build:
+      context: ./embeddings
+      dockerfile: Dockerfile
+    container_name: tours_embeddings
+    environment:
+      MODEL_NAME: ${EMBEDDINGS_MODEL:-sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2}
+      MAX_LENGTH: 512
+    ports:
+      - "${EMBEDDINGS_PORT:-8001}:8000"
+    volumes:
+      - hf_cache:/root/.cache/huggingface
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+    networks:
+      - tours
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tours_backend
+    environment:
+      APP_ENV: ${APP_ENV:-local}
+      APP_KEY: ${APP_KEY:-}
+      APP_URL: ${APP_URL:-http://localhost:8000}
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: ${DB_DATABASE:-tours}
+      DB_USERNAME: ${DB_USERNAME:-tours}
+      DB_PASSWORD: ${DB_PASSWORD:-tours_secret}
+      EMBEDDINGS_URL: http://embeddings:8000
+      LLM_PROVIDER: ${LLM_PROVIDER:-anthropic}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_AUTH_TOKEN: ${ANTHROPIC_AUTH_TOKEN:-}
+      ANTHROPIC_BASE_URL: ${ANTHROPIC_BASE_URL:-https://api.anthropic.com/v1}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-haiku-4-5}
+      YANDEX_MAPS_API_KEY: ${YANDEX_MAPS_API_KEY:-}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - ./backend:/var/www/html
+      - backend_vendor:/var/www/html/vendor
+      - backend_storage:/var/www/html/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+      embeddings:
+        condition: service_started
+    networks:
+      - tours
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tours_frontend
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:8000/api}
+      PUBLIC_ADMIN_URL: ${PUBLIC_ADMIN_URL:-http://localhost:8000/admin}
+      API_URL_SSR: http://backend:8000/api
+      PUBLIC_YANDEX_MAPS_API_KEY: ${YANDEX_MAPS_API_KEY:-}
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - tours
+
+volumes:
+  postgres_data:
+  hf_cache:
+  backend_vendor:
+  backend_storage:
+  frontend_node_modules:
+
+networks:
+  tours:
+    driver: bridge
