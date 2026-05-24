@@ -6,9 +6,9 @@
 
 ## Demo video
 
-<video src="video/demo-tour-catalog.mp4" controls width="100%"></video>
+[![Demo video preview](video/demo-cover.jpg)](video/demo-tour-catalog.mp4)
 
-Локальная копия демо: [video/demo-tour-catalog.mp4](video/demo-tour-catalog.mp4)
+Видео: [video/demo-tour-catalog.mp4](video/demo-tour-catalog.mp4)
 
 ```
         ┌──────────────┐    ┌──────────────────┐
