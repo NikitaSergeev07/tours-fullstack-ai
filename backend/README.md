@@ -32,19 +32,19 @@ docker compose exec backend ./vendor/bin/pint                  # format
 
 The `tours` table has a custom `embedding vector(384)` column and an
 HNSW index built with `vector_cosine_ops`. Migrations use raw
-`DB::statement` for those — Eloquent's blueprint can't express it.
+`DB::statement` for those - Eloquent's blueprint can't express it.
 
 If you change `EMBEDDINGS_DIM`, update **both**:
 
 1. `services.embeddings.dim` in `.env` (or `config/services.php`).
-2. The migration's `vector(N)` literal — and re-run
+2. The migration's `vector(N)` literal - and re-run
    `migrate:fresh --seed` and `tours:reindex`.
 
 ## Tests
 
-- `tests/Feature/HealthTest.php` — sanity check that the bootstrap and
+- `tests/Feature/HealthTest.php` - sanity check that the bootstrap and
   routing work.
-- `tests/Unit/AnthropicTourGeneratorTest.php` — verifies the
+- `tests/Unit/AnthropicTourGeneratorTest.php` - verifies the
   `normalise()` step survives malformed LLM output.
 
 Tests run on the `sqlite::memory:` fallback (`phpunit.xml`), so they

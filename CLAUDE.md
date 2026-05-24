@@ -2,17 +2,17 @@
 
 This monorepo is built and maintained with **Claude Code** (Anthropic CLI),
 with parallel compatibility for **opencode** and **codex** through
-`AGENTS.md`. Every layer of the stack — backend, frontend, embeddings,
-infra — is wired so an agent can iterate on it without leaving the repo.
+`AGENTS.md`. Every layer of the stack - backend, frontend, embeddings,
+infra - is wired so an agent can iterate on it without leaving the repo.
 
 ## TL;DR for the agent
 
 1. **Read first**: this file, `AGENTS.md`, then the layer-specific notes
-   linked below. Don't `Bash cat` them — use the `Read` tool so the harness
+   linked below. Don't `Bash cat` them - use the `Read` tool so the harness
    tracks file state.
 2. **Plan before editing.** For anything spanning more than two files, write
    a `TodoWrite` plan or call the `Plan` sub-agent, then execute the plan.
-3. **Use the sub-agents.** They are scoped — they don't have write tools by
+3. **Use the sub-agents.** They are scoped - they don't have write tools by
    default and they return tight summaries instead of dumping logs into
    the main context. See `.claude/agents/`.
 4. **Use the slash commands.** They encode the project conventions for
@@ -35,21 +35,21 @@ docs/         Architecture, ADRs, AI workflow notes
 
 - **Don't bypass the embeddings indexer.** Whenever you write a script that
   changes tour text fields (title, description, highlights, categories),
-  call `App\Services\Tours\TourIndexer@index` afterwards — otherwise
+  call `App\Services\Tours\TourIndexer@index` afterwards - otherwise
   semantic search drifts silently. The Filament resource already does this
   in `afterCreate`/`afterSave`.
 - **Never store API keys in code or commits.** Anthropic / Yandex keys live
   in `.env` (gitignored). The repo ships an `.env.example` with empty
   values. For the Claude Code session itself, see
-  `.claude/settings.local.json.example` — copy it to
+  `.claude/settings.local.json.example` - copy it to
   `.claude/settings.local.json` (also gitignored) to route the agent
   through a proxy.
 - **LLM has two auth modes.** `AnthropicTourGenerator` accepts either
   `ANTHROPIC_API_KEY` (direct, `x-api-key` header) or
-  `ANTHROPIC_AUTH_TOKEN` (Bearer header — for gngn.my and other
+  `ANTHROPIC_AUTH_TOKEN` (Bearer header - for gngn.my and other
   Anthropic-compatible proxies). The Bearer branch wins if both are set.
   `ANTHROPIC_BASE_URL` must include `/v1`.
-- **pgvector migrations must be raw SQL** — Eloquent's `Blueprint` doesn't
+- **pgvector migrations must be raw SQL** - Eloquent's `Blueprint` doesn't
   know `vector(N)`. See `2024_01_02_000000_create_tours_tables.php` for the
   pattern.
 - **Frontend SSR uses the in-container API URL** (`http://backend:8000/api`)
@@ -58,7 +58,7 @@ docs/         Architecture, ADRs, AI workflow notes
 - **Don't enable Sanctum/CORS for `/api/admin/*`.** Those endpoints opt in
   to session auth via the `web` middleware group inside `routes/api.php`.
 - **Tailwind 4 only.** Project uses `@tailwindcss/vite`. There is no
-  `tailwind.config.js` — design tokens live in `frontend/styles/global.css`
+  `tailwind.config.js` - design tokens live in `frontend/styles/global.css`
   under `@theme { ... }`. If you want to add a colour, add it there.
 
 ## Common loops
@@ -97,7 +97,7 @@ curl -fsS http://localhost:3000/ >/dev/null
 ```
 
 The `/verify` slash command runs all four in parallel and reports the
-findings. If any fail, fix root causes — do not skip with `--no-verify` or
+findings. If any fail, fix root causes - do not skip with `--no-verify` or
 `xfail` markers.
 
 ## Where to write style decisions

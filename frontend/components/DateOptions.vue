@@ -34,7 +34,7 @@ const formatPrice = (price: number, currency: string) => new Intl.NumberFormat('
 <template>
   <ul class="space-y-2">
     <li v-if="upcoming.length === 0" class="text-sm text-surface-500">
-      Ближайших дат нет — следите за обновлениями.
+      Ближайших дат нет - следите за обновлениями.
     </li>
     <li
       v-for="d in upcoming"
@@ -49,7 +49,7 @@ const formatPrice = (price: number, currency: string) => new Intl.NumberFormat('
     >
       <div class="flex items-center justify-between gap-3">
         <div>
-          <p class="font-medium">{{ formatDate(d.start_date) }} — {{ formatDate(d.end_date) }}</p>
+          <p class="font-medium">{{ formatDate(d.start_date) }} - {{ formatDate(d.end_date) }}</p>
           <p class="text-xs text-surface-500">
             Свободно: {{ d.seats_available }} / {{ d.seats_total }} мест
           </p>

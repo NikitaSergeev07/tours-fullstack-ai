@@ -4,6 +4,12 @@
 каталог авторских туров с фильтрами, семантическим поиском по эмбеддингам,
 картой маршрута и админкой с автогенерацией черновика тура через LLM.
 
+## Demo video
+
+<video src="video/demo-tour-catalog.mp4" controls width="100%"></video>
+
+Локальная копия демо: [video/demo-tour-catalog.mp4](video/demo-tour-catalog.mp4)
+
 ```
         ┌──────────────┐    ┌──────────────────┐
         │  Vue + Vike  │◀──▶│  Laravel 11 API  │◀──── Filament admin (/admin)
@@ -23,7 +29,7 @@
 git clone <repo> tours && cd tours
 cp .env.example .env
 # Optional: paste your YANDEX_MAPS_API_KEY into .env.
-# LLM auth — pick ONE of:
+# LLM auth - pick ONE of:
 #   ANTHROPIC_API_KEY=sk-ant-...                  # direct Anthropic
 #   ANTHROPIC_AUTH_TOKEN=sk-...                   # any Anthropic-compatible proxy (e.g. gngn.my)
 #   ANTHROPIC_BASE_URL=https://api.gngn.my/v1     # set when using a proxy
@@ -45,7 +51,7 @@ make verify                       # smoke gate (tests + typecheck + http probes)
 | Бэкенд | PHP 8.3 · Laravel 11 · Filament 3 · PostgreSQL 16 + **pgvector** · Eloquent |
 | Фронт | Vue 3 · **Vike** (SSR) · Vite · **Tailwind 4** (через `@tailwindcss/vite`) · **PrimeVue 4** с кастомным пресетом |
 | Эмбеддинги | FastAPI · `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` (384-dim) |
-| LLM | Anthropic Claude (haiku) — генерация черновика тура в админке. Поддерживает как прямой API (`x-api-key`), так и совместимые прокси с Bearer-токеном (gngn.my и другие) |
+| LLM | Anthropic Claude (haiku) - генерация черновика тура в админке. Поддерживает как прямой API (`x-api-key`), так и совместимые прокси с Bearer-токеном (gngn.my и другие) |
 | Карты | Яндекс Карты JS API |
 | Инфра | Docker Compose · монорепозиторий |
 
@@ -72,7 +78,7 @@ Makefile        Шорткаты для разработки: up / verify / rese
   - CRUD тур + категорий + дат + фотоальбома (reorderable repeater);
   - точки маршрута редактируются как координаты + подпись;
   - кнопка **«Сгенерировать через LLM»** заполняет все поля черновика тура одной строкой запроса (Anthropic Messages API, prefill `{`);
-  - action «Переиндексировать» — пересчёт эмбеддинга на месте.
+  - action «Переиндексировать» - пересчёт эмбеддинга на месте.
 - **Авто-индексация**: при сохранении тура `TourIndexer` пересчитывает эмбеддинг; есть `php artisan tours:reindex` для bulk.
 
 ## Тестирование
@@ -88,39 +94,39 @@ LLM-ответа корректно гасит «битые» драфты.
 
 ## AI окружение (для рецензента)
 
-50 % оценки — за AI-workflow. Что сделано:
+50 % оценки - за AI-workflow. Что сделано:
 
-1. **`CLAUDE.md`** — главный бутстрап-файл агента: правила, репозитарная
+1. **`CLAUDE.md`** - главный бутстрап-файл агента: правила, репозитарная
    карта, чек-лист верификации перед сдачей.
-2. **`AGENTS.md`** — tool-agnostic вариант (читают opencode и codex).
-3. **`.claude/agents/`** — 3 специализированных sub-agent:
+2. **`AGENTS.md`** - tool-agnostic вариант (читают opencode и codex).
+3. **`.claude/agents/`** - 3 специализированных sub-agent:
    `backend-expert`, `frontend-expert`, `ai-expert`. У каждого свой
    набор инструментов и зона ответственности.
-4. **`.claude/commands/`** — slash-команды для типовых workflow:
-   - `/dev` — поднять стек и дождаться готовности;
-   - `/verify` — прогнать smoke-гейты (тесты + typecheck + HTTP-пробы);
-   - `/feature` — план-и-исполнение фичи через делегирование sub-agent;
-   - `/add-tour` — создать тур через тот же LLM-путь, что и админка;
-   - `/reseed` — снести БД и пересеять.
-5. **`.claude/skills/semantic-search-debug/`** — навык диагностики
+4. **`.claude/commands/`** - slash-команды для типовых workflow:
+   - `/dev` - поднять стек и дождаться готовности;
+   - `/verify` - прогнать smoke-гейты (тесты + typecheck + HTTP-пробы);
+   - `/feature` - план-и-исполнение фичи через делегирование sub-agent;
+   - `/add-tour` - создать тур через тот же LLM-путь, что и админка;
+   - `/reseed` - снести БД и пересеять.
+5. **`.claude/skills/semantic-search-debug/`** - навык диагностики
    семантического поиска: проверки `/health`, наличия векторов,
    косинусного скора, фолбэка на ILIKE.
-6. **`.claude/settings.json`** + **`.claude/hooks/format-on-save.sh`** —
+6. **`.claude/settings.json`** + **`.claude/hooks/format-on-save.sh`** -
    автозапуск Pint при каждом редактировании PHP-файла, белый/чёрный
    списки разрешений для Bash.
-7. **`docs/AI_WORKFLOW.md`** — описывает, как именно AI помогает разрабатывать проект.
+7. **`docs/AI_WORKFLOW.md`** - описывает, как именно AI помогает разрабатывать проект.
 
-Для opencode/codex достаточно `AGENTS.md` — он намеренно не ссылается
+Для opencode/codex достаточно `AGENTS.md` - он намеренно не ссылается
 на Claude-специфичные хуки.
 
 ## Деплой
 
 Проект не оптимизирован под прод (`php artisan serve`, dev Vite, без
 nginx/php-fpm), но контейнеры собираются single-stage, поэтому
-переключение на supervisord+nginx — задача одного дополнительного
+переключение на supervisord+nginx - задача одного дополнительного
 Dockerfile. См. `docs/ARCHITECTURE.md` (раздел «production
 checklist»).
 
 ## Лицензия
 
-MIT. Туры сгенерированы для демо; фотографии — `picsum.photos`.
+MIT. Туры сгенерированы для демо; фотографии - `picsum.photos`.

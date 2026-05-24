@@ -15,11 +15,11 @@ use RuntimeException;
  *   - `ANTHROPIC_API_KEY`     → `x-api-key: <key>` (direct Anthropic).
  *   - `ANTHROPIC_AUTH_TOKEN`  → `Authorization: Bearer <token>` (proxy).
  *
- * The auth token wins when both are set — most proxy users leave the
+ * The auth token wins when both are set - most proxy users leave the
  * direct key around as a fallback for switching back.
  *
  * The model is forced into JSON-only output via a strict system prompt and a
- * leading `{` in the assistant turn — Anthropic doesn't expose tool_choice
+ * leading `{` in the assistant turn - Anthropic doesn't expose tool_choice
  * for plain Messages calls the way OpenAI does, but the prefill trick is
  * reliable and cheap. If anything still slips, we extract the first {...}
  * block before decoding.
@@ -101,7 +101,7 @@ TXT;
         }
 
         $data = json_decode($body, true);
-        // Concatenate every text block — Anthropic can return multiple
+        // Concatenate every text block - Anthropic can return multiple
         // (e.g. text + thinking when extended thinking is on). Tool-use
         // blocks are ignored: this endpoint asks for plain JSON only.
         $text = '';
@@ -150,7 +150,7 @@ TXT;
             $headers['x-api-key'] = $this->apiKey;
         } else {
             throw new RuntimeException(
-                'No Anthropic credentials configured — set ANTHROPIC_API_KEY (direct) '.
+                'No Anthropic credentials configured - set ANTHROPIC_API_KEY (direct) '.
                 'or ANTHROPIC_AUTH_TOKEN (proxy) in .env'
             );
         }
@@ -161,7 +161,7 @@ TXT;
     /** @return array<string,mixed> */
     private function normalise(array $raw): array
     {
-        // Soft-validate / coerce — the admin still reviews and edits the draft
+        // Soft-validate / coerce - the admin still reviews and edits the draft
         // so we accept "best-effort" output instead of failing hard.
         $raw['title'] = (string) ($raw['title'] ?? 'Без названия');
         $raw['short_description'] = (string) ($raw['short_description'] ?? '');

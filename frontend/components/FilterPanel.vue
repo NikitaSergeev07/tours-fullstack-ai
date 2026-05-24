@@ -5,6 +5,15 @@ import Button from 'primevue/button'
 import DatePicker from 'primevue/datepicker'
 import type { FilterOptions } from '../api/client'
 
+type LocalState = {
+  categories: string[]
+  difficulty: string
+  duration: [number, number]
+  price: [number, number]
+  date_from: Date | null
+  date_to: Date | null
+}
+
 const props = defineProps<{
   filters: FilterOptions
   query: Record<string, string | string[]>
@@ -12,7 +21,31 @@ const props = defineProps<{
 
 const emit = defineEmits<{ (e: 'change', next: Record<string, string | string[]>): void }>()
 
-const local = ref({
+function firstQueryValue(value: string | string[] | undefined): string {
+  return Array.isArray(value) ? (value[0] || '') : (value || '')
+}
+
+function parseDate(value: string | string[] | undefined): Date | null {
+  const text = firstQueryValue(value)
+  if (!text) return null
+
+  const [year, month, day] = text.split('-').map(Number)
+  if (!year || !month || !day) return null
+
+  const date = new Date(year, month - 1, day)
+  return Number.isNaN(date.getTime()) ? null : date
+}
+
+function formatDate(value: Date | null): string {
+  if (!value) return ''
+
+  const year = value.getFullYear()
+  const month = String(value.getMonth() + 1).padStart(2, '0')
+  const day = String(value.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+const local = ref<LocalState>({
   categories: Array.isArray(props.query.categories) ? props.query.categories : (props.query.categories ? [String(props.query.categories)] : []),
   difficulty: String(props.query.difficulty || ''),
   duration: [
@@ -23,8 +56,8 @@ const local = ref({
     Number(props.query.price_min || props.filters.price.min),
     Number(props.query.price_max || props.filters.price.max),
   ] as [number, number],
-  date_from: (props.query.date_from as string) || '',
-  date_to: (props.query.date_to as string) || '',
+  date_from: parseDate(props.query.date_from),
+  date_to: parseDate(props.query.date_to),
 })
 
 const hasActive = computed(() =>
@@ -52,8 +85,10 @@ function apply() {
   if (local.value.duration[1] !== props.filters.duration.max) next.duration_max = String(local.value.duration[1]); else delete next.duration_max
   if (local.value.price[0] !== props.filters.price.min) next.price_min = String(local.value.price[0]); else delete next.price_min
   if (local.value.price[1] !== props.filters.price.max) next.price_max = String(local.value.price[1]); else delete next.price_max
-  if (local.value.date_from) next.date_from = local.value.date_from; else delete next.date_from
-  if (local.value.date_to) next.date_to = local.value.date_to; else delete next.date_to
+  const dateFrom = formatDate(local.value.date_from)
+  const dateTo = formatDate(local.value.date_to)
+  if (dateFrom) next.date_from = dateFrom; else delete next.date_from
+  if (dateTo) next.date_to = dateTo; else delete next.date_to
   emit('change', next)
 }
 
@@ -63,8 +98,8 @@ function reset() {
     difficulty: '',
     duration: [props.filters.duration.min, props.filters.duration.max],
     price: [props.filters.price.min, props.filters.price.max],
-    date_from: '',
-    date_to: '',
+    date_from: null,
+    date_to: null,
   }
   emit('change', { q: props.query.q })
 }

@@ -56,11 +56,12 @@ class TourResource extends Resource
                                 }
 
                                 $set('title', $draft['title']);
+                                $set('slug', Str::slug($draft['title']));
                                 $set('short_description', $draft['short_description']);
                                 $set('description', $draft['description']);
                                 $set('duration_days', $draft['duration_days']);
                                 $set('difficulty', $draft['difficulty']);
-                                // Repeater::simple() takes a flat list of strings — no wrapping.
+                                // Repeater::simple() takes a flat list of strings - no wrapping.
                                 $set('highlights', $draft['highlights']);
                                 $set('route_points', array_map(fn ($p) => [
                                     'lat' => (float) ($p['lat'] ?? 0),
@@ -82,7 +83,7 @@ class TourResource extends Resource
                                 ], $draft['dates']));
 
                                 Notification::make()
-                                    ->title('Черновик готов — проверьте поля и сохраните')
+                                    ->title('Черновик готов - проверьте поля и сохраните')
                                     ->success()
                                     ->send();
                             }),

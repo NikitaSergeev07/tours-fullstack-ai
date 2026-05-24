@@ -2,8 +2,8 @@
 Lightweight HuggingFace embeddings microservice.
 
 Exposes:
-  GET  /health       — readiness check (returns model name + dim once loaded)
-  POST /embed        — { "texts": [...] } -> { "embeddings": [[...], ...], "dim": int }
+  GET  /health       - readiness check (returns model name + dim once loaded)
+  POST /embed        - { "texts": [...] } -> { "embeddings": [[...], ...], "dim": int }
 
 The model is loaded lazily so the container can boot fast and the healthcheck
 reports `loading` until weights are ready. The Laravel backend pings /health

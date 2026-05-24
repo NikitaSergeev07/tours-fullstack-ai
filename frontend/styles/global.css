@@ -2,7 +2,7 @@
 
 /*
  * Custom tokens for Tours catalogue. Tailwind 4 lets us declare the design
- * system inline via @theme — colours live next to typography so the brand
+ * system inline via @theme - colours live next to typography so the brand
  * stays consistent across cards, filters, and admin pages.
  */
 @theme {

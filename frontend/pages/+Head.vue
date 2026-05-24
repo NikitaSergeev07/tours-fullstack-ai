@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const yandexKey = (
-  // @ts-expect-error – injected by Vite envPrefix
   (typeof import.meta !== 'undefined' && import.meta.env?.PUBLIC_YANDEX_MAPS_API_KEY)
   || (typeof process !== 'undefined' && process.env?.PUBLIC_YANDEX_MAPS_API_KEY)
   || ''

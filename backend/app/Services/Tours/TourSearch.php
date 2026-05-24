@@ -109,7 +109,7 @@ class TourSearch
                 throw new RuntimeException('empty vector');
             }
             // Bind as an explicit pgvector literal so we don't rely on
-            // implicit __toString on the Vector object — that has bitten
+            // implicit __toString on the Vector object - that has bitten
             // teams with older pgvector-php versions before.
             $literal = '['.implode(',', array_map(static fn ($f) => (float) $f, $vector)).']';
             // 1 - cosine_distance is similarity (0..1). Exposed as `score`.

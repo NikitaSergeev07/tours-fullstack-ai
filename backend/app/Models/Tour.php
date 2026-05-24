@@ -81,7 +81,7 @@ class Tour extends Model
         });
     }
 
-    /** Concatenated string used to compute embeddings — keep in sync with the indexer. */
+    /** Concatenated string used to compute embeddings - keep in sync with the indexer. */
     public function embeddingText(): string
     {
         $cats = $this->relationLoaded('categories')

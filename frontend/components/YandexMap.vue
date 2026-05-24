@@ -64,7 +64,7 @@ function initMap() {
 onMounted(async () => {
   const apiKey = window.__PUBLIC_YANDEX_MAPS_API_KEY__ || ''
   if (!apiKey) {
-    error.value = 'API ключ Яндекс Карт не настроен — задайте YANDEX_MAPS_API_KEY в .env.'
+    error.value = 'API ключ Яндекс Карт не настроен - задайте YANDEX_MAPS_API_KEY в .env.'
     return
   }
   try {

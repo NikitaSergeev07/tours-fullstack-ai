@@ -107,7 +107,7 @@ Admin → Filament form (Create / Edit Tour)
    TourIndexer::index → EmbeddingsClient → write embedding column
 ```
 
-## Production checklist (not implemented in this demo)
+## production checklist (not implemented in this demo)
 
 - Replace `php artisan serve` with `php-fpm` behind `nginx`.
 - Replace `npm run dev` with `vite build` + Node SSR worker behind

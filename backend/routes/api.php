@@ -16,7 +16,7 @@ Route::prefix('tours')->group(function () {
 Route::get('/categories', [CategoryController::class, 'index']);
 
 // Admin-only LLM helper used from the Filament panel. We do not expose this
-// endpoint to anonymous clients — the Filament form passes a signed admin
+// endpoint to anonymous clients - the Filament form passes a signed admin
 // session cookie when calling it. See AdminPanelProvider for the CSRF setup.
 Route::middleware('web')->group(function () {
     Route::post('/admin/tours/generate', [TourGenerationController::class, 'generate']);

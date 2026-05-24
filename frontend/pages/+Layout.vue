@@ -9,10 +9,9 @@ function isActive(prefix: string): boolean {
 }
 
 // The admin lives on the Laravel host. On the server we still use the public
-// URL because the link is rendered into HTML and clicked by the user — not
+// URL because the link is rendered into HTML and clicked by the user, not
 // fetched by the SSR runtime.
 const adminUrl = computed(() => {
-  // @ts-expect-error – injected by import.meta.env on the client
   const fromVite = typeof import.meta !== 'undefined' && import.meta.env?.PUBLIC_ADMIN_URL
   return (fromVite as string) || process.env.PUBLIC_ADMIN_URL || 'http://localhost:8000/admin'
 })

@@ -23,7 +23,7 @@ class EditTour extends EditRecord
         // future change reverses that we still want EditTour to be safe.
         unset($data['embedding']);
 
-        // `highlights` is a Repeater::simple() — Filament expects a flat
+        // `highlights` is a Repeater::simple() - Filament expects a flat
         // list of scalars, which is exactly how the model stores them.
         return $data;
     }

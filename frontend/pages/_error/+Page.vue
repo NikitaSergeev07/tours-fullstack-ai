@@ -14,7 +14,7 @@ const isNotFound = code === 404
     </h1>
     <p class="text-surface-600">
       {{ isNotFound
-        ? 'Возможно, тур снят с публикации. Вернёмся к каталогу — там много вариантов.'
+        ? 'Возможно, тур снят с публикации. Вернёмся к каталогу - там много вариантов.'
         : 'Сервис временно недоступен, попробуйте обновить страницу через пару секунд.' }}
     </p>
     <a href="/" class="inline-block mt-6 px-5 py-2.5 rounded-lg bg-brand-600 text-white hover:bg-brand-700 transition">

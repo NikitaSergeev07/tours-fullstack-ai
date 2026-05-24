@@ -22,10 +22,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(TourGenerator::class, function ($app) {
             return new AnthropicTourGenerator(
-                apiKey: (string) config('services.llm.anthropic.api_key'),
-                authToken: (string) config('services.llm.anthropic.auth_token'),
+                apiKey: (string) (config('services.llm.anthropic.api_key') ?: env('ANTHROPIC_API_KEY') ?: getenv('ANTHROPIC_API_KEY') ?: ''),
+                authToken: (string) (config('services.llm.anthropic.auth_token') ?: env('ANTHROPIC_AUTH_TOKEN') ?: getenv('ANTHROPIC_AUTH_TOKEN') ?: ''),
                 model: (string) config('services.llm.anthropic.model'),
-                baseUrl: (string) config('services.llm.anthropic.base_url'),
+                baseUrl: (string) (config('services.llm.anthropic.base_url') ?: env('ANTHROPIC_BASE_URL') ?: getenv('ANTHROPIC_BASE_URL') ?: 'https://api.anthropic.com/v1'),
             );
         });
     }

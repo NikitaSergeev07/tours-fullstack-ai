@@ -9,7 +9,6 @@ export function makeApi(opts: { isServer: boolean }): $Fetch {
   const baseURL = opts.isServer
     ? (process.env.API_URL_SSR || 'http://backend:8000/api')
     : (
-      // @ts-expect-error – injected by import.meta.env in client builds
       import.meta?.env?.PUBLIC_API_URL || process.env.PUBLIC_API_URL || '/api'
     )
   return ofetch.create({

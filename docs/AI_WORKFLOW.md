@@ -23,18 +23,18 @@ piece.
 
 | File | What it does |
 |---|---|
-| `CLAUDE.md` | Bootstrap for Claude Code — hard rules, repo map, common loops |
+| `CLAUDE.md` | Bootstrap for Claude Code - hard rules, repo map, common loops |
 | `AGENTS.md` | Tool-agnostic version (opencode, codex, gstack) |
 | `.claude/settings.json` | Allow/deny lists for Bash, PostToolUse hook |
 | `.claude/hooks/format-on-save.sh` | Runs Pint on touched PHP files |
 | `.claude/agents/backend-expert.md` | Laravel/Filament/pgvector specialist |
 | `.claude/agents/frontend-expert.md` | Vue/Vike/Tailwind 4 specialist |
 | `.claude/agents/ai-expert.md` | Embeddings + Anthropic LLM specialist |
-| `.claude/commands/dev.md` | `/dev` — bring stack up & wait for ready |
-| `.claude/commands/verify.md` | `/verify` — smoke gates in parallel |
-| `.claude/commands/feature.md` | `/feature` — plan + delegate + verify |
-| `.claude/commands/add-tour.md` | `/add-tour` — LLM-generated tour via tinker |
-| `.claude/commands/reseed.md` | `/reseed` — wipe + reseed + reindex |
+| `.claude/commands/dev.md` | `/dev` - bring stack up & wait for ready |
+| `.claude/commands/verify.md` | `/verify` - smoke gates in parallel |
+| `.claude/commands/feature.md` | `/feature` - plan + delegate + verify |
+| `.claude/commands/add-tour.md` | `/add-tour` - LLM-generated tour via tinker |
+| `.claude/commands/reseed.md` | `/reseed` - wipe + reseed + reindex |
 | `.claude/skills/semantic-search-debug/SKILL.md` | Step-by-step diagnostic for search quality |
 
 ## A typical loop
@@ -115,7 +115,7 @@ down, and with `score` back once it's healthy.
 1. Drop a markdown file in `.claude/agents/<name>.md` with frontmatter
    (`name`, `description`, `tools`, optional `model`).
 2. Mention it in `CLAUDE.md` under "When you should delegate".
-3. Keep the description specific — vague descriptions confuse the
+3. Keep the description specific - vague descriptions confuse the
    orchestrator's auto-selection.
 
 ## Cost & latency notes

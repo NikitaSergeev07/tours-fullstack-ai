@@ -27,7 +27,7 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         // Single-tenant admin: any seeded user can sign in. Real deployments
-        // should gate this on a role/permission table — left out to keep the
+        // should gate this on a role/permission table - left out to keep the
         // task scope tight.
         return true;
     }

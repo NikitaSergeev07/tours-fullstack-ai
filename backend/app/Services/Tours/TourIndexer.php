@@ -31,7 +31,7 @@ class TourIndexer
         try {
             $vectors = $this->embeddings->embed([$text]);
         } catch (\Throwable $e) {
-            // Don't break the save flow — operator can run `php artisan
+            // Don't break the save flow - operator can run `php artisan
             // tours:reindex` once the embeddings sidecar is healthy.
             Log::warning('tour indexing skipped', ['tour' => $tour->id, 'error' => $e->getMessage()]);
             return false;

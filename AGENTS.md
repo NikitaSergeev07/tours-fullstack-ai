@@ -19,7 +19,7 @@ instructions tool-agnostic; project-specific Claude Code hooks live in
 
 ## What the agent must know up-front
 
-1. **Embeddings are denormalised — keep them fresh.** Anything that mutates
+1. **Embeddings are denormalised - keep them fresh.** Anything that mutates
    a Tour's text must call `TourIndexer::index` after the save. The Filament
    pages already do this; in scripts/seeders do it explicitly. There is also
    a fallback `php artisan tours:reindex` command.
@@ -29,14 +29,14 @@ instructions tool-agnostic; project-specific Claude Code hooks live in
    matching HNSW index. The model casts `embedding` to `Pgvector\Laravel\Vector`.
 3. **SSR vs client URL split.** `frontend/api/client.ts` picks
    `API_URL_SSR` server-side and `PUBLIC_API_URL` client-side. Don't
-   hardcode `http://localhost:8000` in components — it breaks inside Docker.
+   hardcode `http://localhost:8000` in components - it breaks inside Docker.
 4. **Sliding fallback for search.** If the embeddings sidecar is down,
    `TourSearch::applySearch` falls back to `ILIKE` so the catalogue keeps
    working. Don't remove the fallback "just to clean up".
 
 ## Decision log
 
-- **Filament 3** for the admin instead of Laravel Nova or a custom panel —
+- **Filament 3** for the admin instead of Laravel Nova or a custom panel -
   it has built-in repeaters (used heavily for photos/dates/route) and
   multi-step form validation out of the box.
 - **HNSW index, not IVFFlat.** pgvector ≥ 0.5 ships with HNSW; for a small

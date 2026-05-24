@@ -33,12 +33,12 @@ function applyQuery(next: Record<string, string | string[]>) {
       <div class="max-w-3xl">
         <p class="text-brand-700 font-medium text-sm uppercase tracking-wider">Tours · Каталог</p>
         <h1 class="mt-2 text-4xl lg:text-5xl font-display font-semibold tracking-tight">
-          Найдите свой тур —
+          Найдите свой тур -
           <span class="text-brand-700">по смыслу</span>, а не по словам
         </h1>
         <p class="mt-4 text-surface-600 text-lg">
           Семантический поиск, гибкие фильтры и маршрут на карте. Опишите идеальное
-          путешествие своими словами — наша модель подберёт совпадения, даже если в
+          путешествие своими словами - наша модель подберёт совпадения, даже если в
           названии тура нет ваших ключевых слов.
         </p>
         <SearchBox class="mt-8" :initial="String(query.q || '')" @search="(q) => applyQuery({ ...query, q })" />
